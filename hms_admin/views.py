@@ -1,0 +1,118 @@
+from django.shortcuts import render,redirect
+from .models import * # we give * to import all model class from models.py
+from django.core.mail import send_mail
+from random import randint
+from django.conf import settings # importing settings.py
+# Create your views here.
+
+def admin_login(request):
+    msg = ''   # declaring a variable
+
+    if request.method == 'POST':
+
+        user_name = request.POST['admin_id'] # username is variable, admin_id is textbox name in html page.
+        password = request.POST['password']
+        try: 
+            data = AdminLogin.objects.get(admin_id = user_name ,
+            admin_password = password)       # model name properties (models) = variablename(views)
+            return redirect('hms_admin:admin_home') # redirect to home page
+
+        except Exception as e:
+            print(e)
+            msg = 'Invalid User Name or Password'  # pass a message
+
+            # we pass data form views to html in dictionary format in render()
+    return render(request,'hms_admin/admin_login.html',{'error_msg':msg})   # keyvalue {'error_msg':msg}
+
+def admin_home(request):
+    return render(request,'hms_admin/admin_home.html')
+
+def chg_pwd(request):
+    return render(request,'hms_admin/admin_change_password.html')
+
+def view_app(request):
+    return render(request,'hms_admin/view_appointments.html')
+
+def add_doctor(request):
+
+    departments = Department.objects.all()  # select * from department
+
+    if request.method == 'POST':
+        name = request.POST['doctor_name']
+        email = request.POST['doctor_email']
+        contact = request.POST['doctor_number']
+        department = request.POST['doctor_dept']
+        qualification = request.POST['qaulification']
+        experience = request.POST['experience']
+        fee = request.POST['fees']
+        pic = request.FILES['doctor_photo']
+
+        user_name = randint(1111,9999) # doctors username will be a unique 4 digit number
+        password = 'doc-' + str(user_name) +'-' + name  # eg : password will be doc-3454-john 
+
+        #  username and password will be sent to doctors email
+
+        doctor = Doctor(doctor_name = name, doctor_email = email, doctor_contact = contact,department_id = department,
+        qualification = qualification, experience = experience, fee = fee,pic = pic, username = user_name, password = password)
+        doctor.save()
+
+        send_mail(
+            'username and password',
+            'Hi, your username is '+ str(user_name) +' and password is ' + password,
+            settings.EMAIL_HOST_USER,
+            [email]
+        )
+    return render(request,'hms_admin/add_doctor.html', {'departments':departments,})
+
+def doctors_list(request):
+    doctors = Doctor.objects.filter(status = 'active')
+    return render(request,'hms_admin/doctors_list.html',{'active_doctors' : doctors})
+
+def view_report(request):
+    return render(request,'hms_admin/view_report.html')
+
+def view_patient(request):
+    return render(request,'hms_admin/view_patient.html')
+
+def add_department(request):
+    error_msg = ''
+    success_msg =''
+    if request.method == 'POST':
+
+        department = request.POST['dept'].lower()
+        description = request.POST['desc']
+        pic = request.FILES['pic']
+
+        dept_exist = Department.objects.filter(department = department).exists() # checking if the dept int table 
+        # exist() give boolean result, that is true if data exist
+        if not dept_exist :
+
+            new_dept = Department(department = department , description = description, pic = pic)
+            new_dept.save()
+            success_msg = 'Department Added Succesfully'
+        else:
+            error_msg = 'Department Exist'
+            
+    return render(request,'hms_admin/add_dept.html' , {'error_message' : error_msg, 'success_message' :success_msg})
+
+def view_department(request):
+    departments = Department.objects.all()
+    return render(request,'hms_admin/departments.html', {'departments' :departments})
+
+
+def add_staff(request):
+    if request.method == 'POST':
+        name = request.POST['name']
+        mail = request.POST['id']
+        address = request.POST['address']
+        phone = request.POST['number']
+        password = request.POST['pass']
+        pic = request.FILES['staff_photo']
+
+        staff = Staff(name = name, mail = mail,address = address, phone = phone, password = password, pic = pic)
+        staff.save()
+    return render(request,'hms_admin/add_staff.html')
+
+def view_staff(request):
+    return render(request,'hms_admin/view_staff.html')
+
