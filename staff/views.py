@@ -4,8 +4,7 @@ from django.shortcuts import render
 def staff_home(request):
     return render(request,'staff/staff_home.html')
 
-def registration(request):
-    return render(request,'staff/registration.html')
+
 
 def appointments(request):
     return render(request,'staff/appointments.html')

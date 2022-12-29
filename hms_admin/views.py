@@ -3,6 +3,7 @@ from .models import * # we give * to import all model class from models.py
 from django.core.mail import send_mail
 from random import randint
 from django.conf import settings # importing settings.py
+import string
 # Create your views here.
 
 def admin_login(request):
@@ -34,8 +35,11 @@ def view_app(request):
     return render(request,'hms_admin/view_appointments.html')
 
 def add_doctor(request):
+    error_msg = ''
+    success_msg = ''
 
     departments = Department.objects.all()  # select * from department
+    
 
     if request.method == 'POST':
         name = request.POST['doctor_name']
@@ -48,13 +52,25 @@ def add_doctor(request):
         pic = request.FILES['doctor_photo']
 
         user_name = randint(1111,9999) # doctors username will be a unique 4 digit number
-        password = 'doc-' + str(user_name) +'-' + name  # eg : password will be doc-3454-john 
+        password = 'doc-' + str(user_name) +'-' + contact[6:10]  # eg : password will be doc-3454-john 
 
         #  username and password will be sent to doctors email
+        
+        email_exist = Doctor.objects.filter(doctor_email = email).exists()
+        if not email_exist:
 
-        doctor = Doctor(doctor_name = name, doctor_email = email, doctor_contact = contact,department_id = department,
-        qualification = qualification, experience = experience, fee = fee,pic = pic, username = user_name, password = password)
-        doctor.save()
+            new_doctor = Doctor(doctor_name = name, doctor_email = email, doctor_contact = contact,department_id = department,
+            qualification = qualification, experience = experience, fee = fee, pic = pic, username = user_name, password = password)
+            new_doctor.save()
+            success_msg = 'Your Email is verified'
+        else:
+            error_msg = 'Email is Exist'    
+
+
+        # doctor = Doctor(doctor_name = name, doctor_email = email, doctor_contact = contact,department_id = department,
+        # qualification = qualification, experience = experience, fee = fee, pic = pic, username = user_name, password = password)
+        # doctor.save()
+         
 
         send_mail(
             'username and password',
@@ -62,7 +78,7 @@ def add_doctor(request):
             settings.EMAIL_HOST_USER,
             [email]
         )
-    return render(request,'hms_admin/add_doctor.html', {'departments':departments,})
+    return render(request,'hms_admin/add_doctor.html', {'departments':departments,'error_message' : error_msg, 'succes_message' : success_msg})
 
 def doctors_list(request):
     doctors = Doctor.objects.filter(status = 'active')

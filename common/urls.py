@@ -13,5 +13,7 @@ urlpatterns = [
     path('doctor-single', views.doctor_single, name='dr-single'),
     path('doctor', views.doctor, name='dr'),
     path('user-type', views.user_type, name='user_type'),
+    path('login', views.login, name='login'),
+    path('register', views.patient_registration, name='pat_register'),
     
 ]

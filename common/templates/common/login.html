@@ -35,21 +35,24 @@
               Return home</a
             >
           </div>
-
+ 
           <div class="contact">
-            <form action="">
-
+            
+            <form method="POST">
+            
+              {% csrf_token %}
               <h3>LOGIN</h3>
 
-              <input type="text" placeholder="USERNAME" />
-              <input type="password" placeholder="PASSWORD" />
+              <input type="text" name="username" placeholder="USERNAME" />
+              <input type="password"  name = "password" placeholder="PASSWORD" />
            
               <button class="submit">LOGIN</button>
-
+              <p style="color: red;">   {{ error_msg }}</p>
               <span>
-                New User ? <a href="{% url 'patient:pt_reg' %}"> Register </a>
+                New User ? <a href="{% url 'common:pat_register' %}"> Register </a>
               </span>
             </form>
+           
           </div>
         </div>
 

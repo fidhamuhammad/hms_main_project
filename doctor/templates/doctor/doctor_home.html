@@ -1,4 +1,4 @@
-{% extends 'doctor/doctor_masterpage.html' %}
+{% extends 'doctor/doctor_master.html' %}
 {% load static %}
 
 {% block header %}
@@ -12,7 +12,7 @@
 
 <h1 style="color: rgb(6, 6, 165);  text-align: center;"
 class="mb-4">
-Welcome Doctor Name
+Welcome {{ doc_name | title }}
 </h1>
 
 <div class="container-xxl flex-grow-1 container-p-y">

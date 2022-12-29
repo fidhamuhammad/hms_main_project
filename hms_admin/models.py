@@ -32,6 +32,7 @@ class Doctor(models.Model):
     username = models.IntegerField()
     password = models.CharField(max_length=50)
     status = models.CharField(max_length=20, default = 'active')
+    
     class Meta :
         db_table = 'doctr_tb'
 

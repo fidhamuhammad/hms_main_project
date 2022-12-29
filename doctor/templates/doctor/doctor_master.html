@@ -76,21 +76,16 @@
                 <div class="collapse navbar-collapse" id="navbarmain">
                     <ul class="navbar-nav ml-auto" style="align-items: right">
                         <li class="nav-item active">
-                            <a class="nav-link" href="{% url 'doctor:dr-home' %}">Home</a>
+                            <a class="nav-link" href="{% url 'doctor:dr_home' %}">Home</a>
                         </li>
 
-                        <li class="nav-item active">
-                            <a class="nav-link" href="{% url 'common:depts' %}">
-                                Departments
-                            </a>
-                        </li>
                        
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="" id="dropdown03" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false"> Profile </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdown03">
-                                <li><a class="dropdown-item" href="{% url 'doctor:dr-pro' %}"> My Profile </a></li>
-                                <li><a class="dropdown-item" href="{% url 'doctor:chg-pwd' %}"> Change Password </a>
+                                <li><a class="dropdown-item" href="{% url 'doctor:dr_profile' %}"> My Profile </a></li>
+                                <li><a class="dropdown-item" href="{% url 'doctor:change_pswd' %}"> Change Password </a>
                                 </li>
                             </ul>
                         </li>
@@ -114,10 +109,10 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <li>
-                                    <a class="dropdown-item" href="{% url 'doctor:dr-pro' %}">My profile</a>
+                                    <a class="dropdown-item" href="{% url 'doctor:dr_profile' %}">My profile</a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="{% url 'doctor:chg-pwd' %}">Change Password</a>
+                                    <a class="dropdown-item" href="{% url 'doctor:change_pswd' %}">Change Password</a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="{% url 'common:com-home' %}">Logout</a>

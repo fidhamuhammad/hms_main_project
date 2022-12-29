@@ -1,4 +1,4 @@
-{% extends 'doctor/doctor_masterpage.html' %}
+{% extends 'doctor/doctor_master.html' %}
 {% load static %}
 
 {% block header %}
@@ -18,18 +18,20 @@
                 <div id="container">
                     <div id="header"> </div>
                     <div id="form">
-                        <form>
-                            <!-- required -->
-                            <input type="password" placeholder="Old Password" id="passOld" > <br><br>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="password" placeholder="Old Password" name ="old_passwd"  id="passOld" > <br><br>
 
-                            <input type="password" placeholder="New Password" id="passOne" > <br><br>
+                            <input type="password" placeholder="New Password" name ="new_passwd" id="passOne" > <br><br>
 
-                            <input type="password" placeholder="Confirm Password" id="passTwo"> <br><br><br>
+                            <input type="password" placeholder="Confirm Password" name ="confirm_passwd" id="passTwo"> <br><br><br>
                             <div class="pass-sub">
                                 <a href="">
-                                    <input type="button" value="Submit" id="btn1" class="btn-primary"> </a>
+                                    <input type="submit" value="Submit" id="btn1" class="btn-primary"> </a>
                             </div>
                         </form>
+                        {{ success_msg }}
+                        {{ error_msg }}
                     </div>
                     <div id="footer" class="incorrect"></div>
                 </div>

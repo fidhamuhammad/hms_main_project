@@ -31,7 +31,9 @@
                     <div style="display:flex;width:100%;">
                         <form method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
-
+                            
+                            <p class="text-danger" textalign="top">{{ error_message }}</p> 
+                            <p class="text-success" textalign="top">{{ success_message }}</p>
                             <div style="width:100%;">
 
                               <label class="text-dark">Name</label>
@@ -39,6 +41,8 @@
                             </div>
 
                             <div style="width:100%;">
+                               
+                                 
                                 <label class="text-dark">Email ID</label>
                                 <input name="doctor_email" type="email">
                             </div>

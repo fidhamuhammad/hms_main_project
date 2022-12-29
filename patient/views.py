@@ -1,8 +1,10 @@
 from django.shortcuts import render
-
+from common.models import Patient
 # Create your views here.
-def p_home(request):
-    return render(request,'patient/patient_home.html')
+def home(request):
+    patient = Patient.objects.filter(id = request.session['patient']).values('patient_name')
+    pat_name = patient[0]['patient_name']
+    return render(request,'patient/patient_home.html', {'pat_name' : pat_name})
 
 def appointment(request): # old appointment
     return render(request,'patient/appointment.html')
